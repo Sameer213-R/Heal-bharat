@@ -1,0 +1,115 @@
+# task 1 restfull api project
+import mysql.connector as c
+import pandas as pd
+from flask import Flask, render_template_string, render_template
+
+app = Flask(__name__)
+con = c.connect(host="localhost", user="root", passwd="2130", database="lib")
+mycour = con.cursor()
+
+@app.route("/")
+def wel():
+    return render_template("lib_data.html")
+
+@app.route("/book")
+def book():
+    try:
+        mycour.execute("SELECT book.id, book.title, book.genre, author.author_name, book.stock FROM book JOIN author ON book.id = author.book_id")
+        data = mycour.fetchall()
+        new_data = pd.DataFrame(data=data, columns=["book id", "title", "genre", "author name", "book stock"])
+    except Exception as e:
+        return str(e)
+    return render_template_string("<h2>This is book data of Library</h2>" + new_data.to_html(index=False))
+
+@app.route("/lib_data")
+def lib_data():
+    try:
+        mycour.execute("SELECT book.title, book.genre, book.stock, author.author_name, member.name, member.contact FROM book JOIN author ON book.id = author.book_id JOIN member ON book.id = member.book_id")
+        lib_data = mycour.fetchall()
+        new_lib_data = pd.DataFrame(lib_data, columns=["title", "genre", "stock", "author name", "name", "contact"])
+    except Exception as e:
+        return str(e)
+    return render_template_string("<h2>This is Library DataBase</h2>" + new_lib_data.to_html(index=False))
+
+@app.route("/member")
+def member():
+    try:
+        mycour.execute("SELECT id, name, contact FROM member")
+        member_data = mycour.fetchall()
+        new_member_data = pd.DataFrame(member_data, columns=["member id", "member name", "contact"])
+    except Exception as e:
+        return str(e)
+    return render_template_string("<h2>Member data of Library</h2>" + new_member_data.to_html(index=False))
+
+@app.route("/update_book/title/<string:title>/genre/<string:genre>/stock/<int:stock>/author/<string:author>/book_id/<int:book_id>")
+def book_update(title, genre, stock, author, book_id):
+    try:
+        mycour = con.cursor()
+        query_book = f"INSERT INTO book (title, stock, genre) VALUES ('{title}', {stock}, '{genre}')"
+        mycour.execute(query_book)
+        query_author = f"INSERT INTO author (author_name, book_id) VALUES ('{author}', {book_id})"
+        mycour.execute(query_author)
+        con.commit()
+    except Exception as e:
+        return str(e)
+    return render_template_string("<h2>Data is submitted</h2><br><a href='/lib_data'>Go back to Library Data</a>")
+
+
+@app.route("/member_update/name/<string:name>/contact/<string:contact>/book_id/<int:book_id>")
+def member_update(name, contact, book_id):
+    try:
+        mycour = con.cursor()
+        query_member = f"INSERT INTO member (name, book_id,contact ) VALUES ('{name}', {book_id}, '{contact}')"
+        mycour.execute(query_member)
+        con.commit()
+    except Exception as e:
+        return str(e)
+    return render_template_string("<h2>Member data is submitted</h2><br><a href='/lib_data'>Go back to Library Data</a>")
+
+@app.route("/delete/bookid/<int:bookid>")
+def delete(bookid):
+    try:
+        mycour = con.cursor()
+        delete_query = "delete from book where id= {}".format(bookid)
+        mycour.execute(delete_query)
+        con.commit()
+    except Exception as e:
+        return str(e)
+    return render_template_string("<h2> Data is deleted from database </h2><br><a href='/lib_data'>Go back to Library Data</a>")
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
+
+# code of html required
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Library Database</title>
+    <style>
+        .button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        .button:hover {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">Welcome to the Library Database</h1>
+    <button class="button" onclick="window.location.href='/lib_data'">View Library Data</button>
+    <button class="button" onclick="window.location.href='/book'">Library Book Data</button>
+    <button class="button" onclick="window.location.href='/member'">Members of Library</button>
+</body>
+</html>
+
