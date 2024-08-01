@@ -1,0 +1,91 @@
+# task 2  web scraping project
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+
+url = "http://127.0.0.1:5500/index.html"
+data = requests.get(url)
+
+soup = BeautifulSoup(data.text, "html.parser")
+day =[]
+temp =[]
+condition = []
+
+find = soup.find_all(class_="forecast")
+for i in find:
+    day_all = i.find("h2").text
+    tem_all = i.find_all("p")[0].text
+    condition_all =i.find_all("p")[1].text
+
+    # appending element
+    day.append(day_all)
+    temp.append(tem_all)
+    condition.append(condition_all)
+
+
+# creating dataframe
+weather_data =pd.DataFrame({
+    "day":day,
+    "temp":temp,
+    "condition" :condition
+
+})
+print(weather_data)
+weather_data.to_excel("nashik_weatherdata.xlsx",index=False)
+
+
+
+# colne of html to scrap
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake Weather Forecast</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .forecast {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 20px auto;
+            padding: 15px;
+            max-width: 300px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .forecast h2 {
+            color: #007BFF;
+        }
+        .forecast p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather Forecast for Nashik</h1>
+    <div class="forecast">
+        <h2>Today</h2>
+        <p>Temperature: 28°C</p>
+        <p>Condition: Sunny</p>
+    </div>
+    <div class="forecast">
+        <h2>Tomorrow</h2>
+        <p>Temperature: 30°C</p>
+        <p>Condition: Partly Cloudy</p>
+    </div>
+    <div class="forecast">
+        <h2>Day After Tomorrow</h2>
+        <p>Temperature: 27°C</p>
+        <p>Condition: Rainy</p>
+    </div>
+</body>
+</html>
