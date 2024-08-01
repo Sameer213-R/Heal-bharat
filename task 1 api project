@@ -4,7 +4,7 @@ import pandas as pd
 from flask import Flask, render_template_string, render_template
 
 app = Flask(__name__)
-con = c.connect(host="localhost", user="root", passwd="2130", database="lib")
+con = c.connect(host="localhost", user="root", passwd="****", database="lib")
 mycour = con.cursor()
 
 @app.route("/")
