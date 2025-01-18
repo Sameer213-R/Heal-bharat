@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixed Deposit Returns Calculator</title>
+    <!-- Link to external CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- Main container -->
+    <div class="container mt-5">
+        <!-- Card for the calculator -->
+        <div class="card shadow">
+            <div class="card-header text-center bg-primary text-white">
+                <h3>Bank Fixed Deposit Returns Calculator</h3>
+            </div>
+            <div class="card-body">
+                <!-- Form for user inputs -->
+                <form id="fdForm">
+                    <div class="mb-3">
+                        <label for="amount" class="form-label">Enter Amount (₹):</label>
+                        <input type="number" id="amount" class="form-control" placeholder="e.g., 50000" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="duration" class="form-label">Select Duration (Years):</label>
+                        <select id="duration" class="form-select" required>
+                            <option value="">Choose...</option>
+                            <option value="1">1 Year</option>
+                            <option value="2">2 Years</option>
+                            <option value="3">3 Years</option>
+                            <option value="5">5 Years</option>
+                        </select>
+                    </div>
+                    <button type="button" id="calculateBtn" class="btn btn-primary w-100">Calculate Returns</button>
+                </form>
+                <!-- Section to display the calculated results -->
+                <div class="mt-4" id="result" style="display: none;">
+                    <h5>Returns Summary:</h5>
+                    <p><strong>Principal Amount:</strong> ₹<span id="principal"></span></p>
+                    <p><strong>Rate of Interest:</strong> <span id="rate"></span>%</p>
+                    <p><strong>Invest Value:</strong> ₹<span id="invest"></span></p>
+                    <p><strong>Total Maturity Amount:</strong> ₹<span id="maturity"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Link to external JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

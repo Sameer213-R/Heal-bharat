@@ -1,0 +1,47 @@
+/* 
+ * styles.css
+ * Styling for the Fixed Deposit Returns Calculator
+ * Author: [Your Name]
+ * Date: [Date]
+ */
+
+/* Body styling for light background */
+body {
+    background-color: #f8f9fa; /* Light grey background */
+    font-family: Arial, sans-serif; /* Default font */
+}
+
+/* Card styling for shadow and spacing */
+.card {
+    border-radius: 8px; /* Rounded corners */
+    overflow: hidden;
+}
+
+/* Header styling for primary background */
+.card-header {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: #fff; /* White text */
+}
+
+/* Styling for form labels */
+.form-label {
+    font-weight: bold; /* Make labels bold */
+    color: #333; /* Dark grey color */
+}
+
+/* Styling for the calculate button */
+#calculateBtn {
+    font-size: 16px; /* Increase font size */
+    font-weight: bold; /* Make the text bold */
+}
+
+/* Result section styling */
+#result h5 {
+    font-weight: bold;
+    color: #007bff; /* Bootstrap primary color */
+}
+
+#result p {
+    font-size: 16px;
+    margin: 5px 0; /* Spacing between lines */
+}
